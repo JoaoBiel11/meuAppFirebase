@@ -1,11 +1,14 @@
 import { signOut } from "firebase/auth";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { auth } from "../firebaseConfig";
-export default function HomeScreen({ navigation }) {
+import { router } from 'expo-router';
+
+export default function Home() {
   const handleLogout = async () => {
     await signOut(auth);
-    navigation.navigate("Login");
+    router.push("/login");
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -16,6 +19,7 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", alignItems: "center" },
   title: { fontSize: 20, marginBottom: 20 },
