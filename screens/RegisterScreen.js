@@ -3,13 +3,18 @@ import { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleRegister = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "usuarios", email), {
+        email,
+        criadoEm: new Date(),
+      });
       alert("Usuário cadastrado com sucesso!");
       navigation.navigate("Login");
     } catch (error) {
