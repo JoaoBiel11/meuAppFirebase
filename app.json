@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "meeting-room-booking",
-    "slug": "meeting-room-booking",
+    "name": "reservas-app",
+    "slug": "reservas-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,28 +1,19 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Rooms from './screens/Rooms';
-import Bookings from './screens/Bookings';
 import Login from './screens/Login';
-import { getAuth } from 'firebase/auth';
+import Salas from './screens/Salas';
+import Reservas from './screens/Reservas';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {user ? (
-          <>
-            <Stack.Screen name="Rooms" component={Rooms} />
-            <Stack.Screen name="Bookings" component={Bookings} />
-          </>
-        ) : (
-          <Stack.Screen name="Login" component={Login} />
-        )}
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} options={{ title: 'Login' }} />
+        <Stack.Screen name="Salas" component={Salas} options={{ title: 'Salas Disponíveis' }} />
+        <Stack.Screen name="Reservas" component={Reservas} options={{ title: 'Minhas Reservas' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

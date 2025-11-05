@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import axios from 'axios';
+
+const API_URL = 'http://localhost:8080/api/usuarios';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const auth = getAuth();
+  const [senha, setSenha] = useState('');
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => navigation.navigate('Rooms'))
-      .catch((error) => alert(error.message));
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/login`, { email, senha });
+      if (response.data) {
+        navigation.navigate('Salas', { usuario: response.data });
+      } else {
+        alert('Email ou senha inválidos.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao fazer login.');
+    }
   };
 
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => navigation.navigate('Rooms'))
-      .catch((error) => alert(error.message));
+  const handleRegistro = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/registrar`, { email, senha, nome: 'Novo Usuário' });
+      if (response.data) {
+        navigation.navigate('Salas', { usuario: response.data });
+      } else {
+        alert('Erro ao registrar.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao registrar.');
+    }
   };
 
   return (
@@ -29,13 +46,13 @@ const Login = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        placeholder="Senha"
+        value={senha}
+        onChangeText={setSenha}
         secureTextEntry
       />
       <Button title="Login" onPress={handleLogin} />
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <Button title="Registrar" onPress={handleRegistro} />
     </View>
   );
 };
