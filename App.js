@@ -1,17 +1,28 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Rooms from './screens/Rooms';
+import Bookings from './screens/Bookings';
+import Login from './screens/Login';
+import { getAuth } from 'firebase/auth';
 
-import HomeScreen from "./screens/HomeScreen.js";
-import LoginScreen from "./screens/LoginScreen.js";
-import RegisterScreen from "./screens/RegisterScreen.js";
 const Stack = createStackNavigator();
+
 export default function App() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        {user ? (
+          <>
+            <Stack.Screen name="Rooms" component={Rooms} />
+            <Stack.Screen name="Bookings" component={Bookings} />
+          </>
+        ) : (
+          <Stack.Screen name="Login" component={Login} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
